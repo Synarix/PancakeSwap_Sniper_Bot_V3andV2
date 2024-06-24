@@ -109,9 +109,6 @@ You can find the used contract address in `pRixSwapOracle/constants.py` line 14.
 
 All contributions fund server costs and the Synarix project development. Be part of our journey and support us. Early investors and users will be rewarded with RIX tokens.
 
-#### Crypto Donation Address:
-###### ETH/BNB - 0x3844D3051a35AcA55f2236897f92Fcfce7A83000
-###### BTC - bc1qqgc96rq3mzau9lnvjccmq6w6lgrt3hxtqq8vfp
-###### XMR - 42QEHiBtvxG2ECBZCyngxjMai4arLhUDTgyUkwjW5PBZacqhmBK38M74Li5D4douZ6go3xyuKdjXTEmAGTvyWujdTmk7oCW
-
+#### Donation Address:
+###### 0x3844D3051a35AcA55f2236897f92Fcfce7A83000
 
