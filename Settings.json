@@ -1,0 +1,19 @@
+{
+    "metamask_address": "",
+    "metamask_private_key": "",
+    "RPC": "https://bsc-dataseed.binance.org/",
+    "GWEI_OFFSET": 1,
+    "MaxTXFeeBNB": 0.01,
+    "Slippage": 20,
+    "MinLiquidityUSD": 1000,
+    "MaxSellTax": 25,
+    "MaxBuyTax": 15,
+    "timeout": 120,
+
+    "cc_BlacklistWords": [
+        "ROOT",
+        "allowed",
+        "Accounting",
+        "blacklist"
+    ]
+}
