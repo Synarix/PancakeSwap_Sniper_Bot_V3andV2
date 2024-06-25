@@ -1,8 +1,8 @@
 {
     "metamask_address": "",
     "metamask_private_key": "",
-    "RPC": "https://bsc-dataseed.binance.org/",
-    "GWEI_OFFSET": 1,
+    "RPC": "https://endpoints.omniatech.io/v1/bsc/mainnet/public",
+    "GWEI_OFFSET": 2,
     "MaxTXFeeBNB": 0.01,
     "Slippage": 20,
     "MinLiquidityUSD": 1000,

@@ -121,32 +121,9 @@ class RixSwapOracle:
             ).call()
     
     def getBNBBalance(self):
-        return self.w3.eth.getBalance(self.user_address)
+        return self.w3.eth.get_balance(self.user_address)
 
-    def sendBNB(self, recipient_address, amount_BNB):
-        try:
-            amount_wei = self.w3U.to_wei(amount_BNB, 18)
-            transaction = {
-                'to': self.w3.to_checksum_address(recipient_address),
-                'value': amount_wei,
-                'gasPrice': self.w3.eth.gas_price + self.w3.to_wei(int(self.settings.settings["GWEI_OFFSET"]), 'gwei'),
-                'nonce': self.w3.eth.get_transaction_count(self.user_address),
-                'gas': 210000
-            }
-            transaction['gas'], maxGasETH, notExtendMax = self.w3U.estimate_gas(transaction)
-            signed_txn = self.w3.eth.account.sign_transaction(transaction, self.priv_key)
-            if notExtendMax:
-                txn_hash = self.w3.eth.send_raw_transaction(signed_txn.rawTransaction)
-                txn_receipt = self.w3.eth.wait_for_transactionReceipt(txn_hash, timeout=int(self.settings.settings["timeout"]))
-            else:
-                return False, maxGasETH, txn_hash.hex(), False
-            if txn_receipt["status"] == 1:
-                return True, maxGasETH, txn_hash.hex(), False
-            else:
-                return False,0, txn_hash.hex(), False
-        except Exception as e:
-            return False,0, "", e
-        
+    #we dont need transfer eth/bnb!      
 
     def TestSwapETHtoToken(self, inputAmount: float):
         try:
@@ -203,6 +180,7 @@ class RixSwapOracle:
         while trys:
             try:
                 v = self.getSwapProtocollVersionEthToken()
+                print(f"DEX Version is {v}")
                 inputBNB = self.w3U.to_wei(inputAmount, 18)
                 if int(v) == 2:
                     return self.SwapFromETHtoTokenV2(inputBNB)

@@ -45,7 +45,7 @@ class IERC20:
                 2**256 - 1
             ).build_transaction(
                 {'from': self.user_address,
-                 'gas_Price': self.w3.eth.gas_price + Web3.to_wei(self.settings.settings["GWEI_OFFSET"], "gwei"),
+                 'gasPrice': self.w3.eth.gas_price + Web3.to_wei(self.settings.settings["GWEI_OFFSET"], "gwei"),
                  'nonce': self.w3.eth.get_transaction_count(self.user_address),
                  'value': 0}
             )
@@ -65,31 +65,3 @@ class IERC20:
         else:
             return True, "Already Approved", ""
             
-
-    def transfer(self, receiver, amountIn):
-        try:
-            txn = self.token_Instance.functions.transfer(
-                    Web3.to_checksum_address(receiver),
-                    self.w3U.to_wei(amountIn, self.get_token_decimals())
-                ).build_transaction(
-                    {'from': self.user_address,
-                     'gas_Price': self.w3.eth.gas_Price + Web3.to_wei(self.settings.settings["GWEI_OFFSET"], "gwei"),
-                     'nonce': self.w3.eth.get_transaction_count(self.user_address),
-                     'value': 0
-                    }
-                )
-            txn.update({'gas': int(self.w3U.estimateGas(txn)[0])})
-            signed_txn = self.w3.eth.account.sign_transaction(
-                txn,
-                self.priv_key
-            )
-            txn = self.w3.eth.send_raw_transaction(signed_txn.rawTransaction)
-            txn_receipt = self.w3.eth.wait_for_transaction_receipt(
-                txn, timeout=self.settings.settings["timeout"])
-            if txn_receipt['status'] == 1:
-                return True, txn.hex()
-            else:
-                return False, txn.hex()
-        except Exception as e:
-            print(e)
-            return False, txn.hex()

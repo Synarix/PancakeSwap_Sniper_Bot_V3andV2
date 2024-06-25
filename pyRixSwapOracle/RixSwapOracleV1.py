@@ -1,4 +1,4 @@
-from .imports import *
+
 from .libs.W3Utils import *
 from .libs.IERC20 import *
 from .libs.RixSwapOracle import *
@@ -21,8 +21,7 @@ class initSettings():
         if Web3.is_address(self.settings["metamask_address"]) != True:
             print("Please check your Settings.json and set metamask_address!")
             raise SystemExit
-
-        if len(self.settings["metamask_private_key"]) >= 64:
+        if len(self.settings["metamask_private_key"]) != 64:
             print("Please check your Settings.json and set metamask_private_key!")
             raise SystemExit
 
@@ -38,16 +37,13 @@ class SwapOracle:
 
         self.settings = initSettings()
         self.w3 = self.connect()
-
         self.w3U = W3Utils(self.settings, self.w3)
         if Web3.is_address(token):
             pass
         else:
             token = constant(self.w3.eth.chain_id).RIX
-            
         self.IERC20 = IERC20(self.settings, self.w3, Web3.to_checksum_address(token), self.w3U)
         self.SwapContract = RixSwapOracle(self.settings, self.w3, self.IERC20, self.w3U)
-        
         
     def connect(self):
         keys = self.settings.settings

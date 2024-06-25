@@ -1,9 +1,9 @@
 from time import sleep
-import json, argparse
+
 from halo import Halo
 from pyRixSwapOracle.RixSwapOracleV1 import SwapOracle
 import requests
-
+from pyRixSwapOracle.imports import *
 
 class CustomPrinter:
     COLORS = {
@@ -57,7 +57,7 @@ parser.add_argument('-bo', '--buyonly',  action="store_true",
                     help='Buy Tokens with from your given amount')
 parser.add_argument('-cl', '--checkliquidity',  action="store_true",
                     help='with this arg you use liquidityCheck')
-parser.add_argument('-r', '--retry', default=3, nargs="?", const=True, type=int,
+parser.add_argument('-r', '--retry', default=1, nargs="?", const=True, type=int,
                     help='with this arg you retry automatically if your tx failed, e.g. "-r 5" or "--retry 5" for max 5 Retrys')
 parser.add_argument('-sec', '--SwapEnabledCheck',  action="store_true",
                     help='this argument disabled the SwapEnabled Check!')
@@ -145,24 +145,26 @@ class SniperBot():
                     self.print_custom("exit!", color="red")
                     raise SystemExit
                 
+        self.tokenSymbol = self.TXN.IERC20.get_token_Symbol()
         self.print_custom(ascii, color="yellow")
-        self.print_custom("Attention, You pay a 0.7% Tax on your swap amount if you dont hold 1k RIX!", color="red")
+        self.print_custom("Attention, You pay a 1% Tax on your swap amount if you dont hold 1k RIX!", color="red")
         self.print_custom("Start Sniper Tool with following arguments:", color="yellow")
         self.print_custom( "---------------------------------", color="blue")
+        self.print_custom(f"User Balance: {Web3.from_wei(self.TXN.SwapContract.getBNBBalance(), "ether")} BNB", color="yellow")
         self.print_custom("Amount for Buy: "+str(self.amount)+" BNB", color="yellow")
         self.print_custom("Token to Interact: "+str(self.token) , color="yellow")
         self.print_custom("Token Name: "+str(self.TXN.IERC20.get_token_Name()) , color="yellow")
-        self.print_custom("Token Symbol: "+ str(self.TXN.IERC20.get_token_Symbol()), color="yellow")
+        self.print_custom("Token Symbol: "+ str(self.tokenSymbol), color="yellow")
         self.print_custom("Transaction to send: "+str(self.tx) , color="yellow")
         self.print_custom("Amount per transaction: "+str(self.TXN.w3U.get_human_amount(self.amountForSnipe)) , color="yellow")
         self.print_custom("Await Blocks before buy: "+ str(self.wb), color="yellow")
 
         if self.tsl != 0:
-            self.print_custom("Trailing Stop loss Percent :"+ str(self.tsl), color="yellow")
+            self.print_custom("Trailing Stop loss Percent: "+ str(self.tsl), color="yellow")
         if self.tp != 0:
-            self.print_custom("Take Profit Percent :" + str(self.tp), color="yellow")
+            self.print_custom("Take Profit Percent: " + str(self.tp), color="yellow")
         if self.sl != 0:
-            self.print_custom("Stop loss Percent :"+str(self.sl), color="yellow")
+            self.print_custom("Stop loss Percent: "+str(self.sl), color="yellow")
         self.print_custom("---------------------------------", color="blue")
 
                 
@@ -279,13 +281,12 @@ class SniperBot():
                 spinner.stop()
                 break
             except Exception as e:
-                print(e)
+                print(e, end="\r")
                 if "UPDATE" in str(e):
                     self.print_custom(e)
                     raise SystemExit
                 continue
         self.print_custom("[DONE] Liquidity is Added!", color="green")
-
 
     def fetchLiquidity(self):
         liq = self.TXN.w3U.from_wei(self.TXN.SwapContract.getLiquidityUSD(), 18)
@@ -295,7 +296,6 @@ class SniperBot():
             raise SystemExit
         return True
     
-
     def awaitEnabledBuy(self):
         spinner = Halo(text='await Dev Enables Swapping', spinner='dots')
         spinner.start()
@@ -306,7 +306,7 @@ class SniperBot():
                     spinner.stop()
                     break
             except Exception as e:
-                #self.print_custom(str(e), color="red")
+                self.print_custom(str(e), color="red")
                 if "UPDATE" in str(e):
                     self.print_custom(e, color="red")
                     raise SystemExit
@@ -387,6 +387,7 @@ class SniperBot():
             else:
                 self.sellpercent = int(input("Enter Percent you want to sell: "))
             tokenBalance = self.TXN.w3U.from_wei(self.TXN.IERC20.get_token_balance(self.TXN.SwapContract.user_address), self.TXN.IERC20.get_token_decimals())
+            self.print_custom(f"Token Balance: {tokenBalance} {self.tokenSymbol}", color="yellow")
             AmountForInput = (tokenBalance / 100) * self.sellpercent
             self.print_custom("Sell TX Hash: " + self.TXN.SwapContract.SwapTokentoETH(AmountForInput)[1], color="green")
             raise SystemExit
@@ -407,15 +408,15 @@ class SniperBot():
 
         if self.hp == True:
             try:
+                self.print_custom("[HONEYPOT]: Checking Token...", color="yellow")
                 honeyTax = self.TXN.SwapContract.getTokenInfos()
-                self.print_custom("Checking Token...", color="yellow")
 
                 if honeyTax[2] == True:
-                    self.print_custom("Token is Honeypot, exiting", color="red")
+                    self.print_custom("[HONEYPOT]: Token is Honeypot, exiting", color="red")
                     raise SystemExit
                 elif honeyTax[2] == False:
                     self.print_custom(
-                          "[DONE] Token is NOT a Honeypot!", color="green")
+                          "[HONEYPOT]: Token is NOT a Honeypot!", color="green")
             except Exception as e:
                 self.i = input(
                     "Error in HoneyPot Check, HIGH Risk to enter a Honeypot!\n" +" Exiting? y/n \n > ")
@@ -450,14 +451,12 @@ class SniperBot():
         if self.nobuy != True:
             self.awaitBuy()
 
-        # Give the RPC/WS some time to Index your address nonce, make it higher if " ValueError: {'code': -32000, 'message': 'nonce too low'} "
-
         if self.tsl != 0 or self.tp != 0 or self.sl != 0:
             sleep(3)
             self.awaitApprove()
             self.awaitMangePosition()
 
-        self.print_custom("[DONE] Trading-Tigers.com Sniper Bot Finish Work.")
+        self.print_custom("Synarix Sniper Bot Finish Work.", color="green")
 
 
 
