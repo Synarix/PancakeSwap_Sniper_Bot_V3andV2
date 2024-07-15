@@ -4,9 +4,11 @@
 
 ### 📞 Need Support?
 Feel free to contact me on Telegram: 
+<!-- HTML-Version -->
+
 <div style="display: flex; align-items: center; ;">
-    <a href="https://t.me/Synarix_DEV" target="_blank" style="background-color: #424242; padding: 10px; border-radius: 20px; text-decoration: none; display: flex; align-items: center;">
-        <img src="https://cdn4.cdn-telegram.org/file/XzdWPCv8jHqaAcT1zhwL2Lk11kxLZ8o6iA-DMIrr46FlBfK8ijQHDtjXIh9VqApOI1ZhYSOB1S46yQ9a5MuyJ1ZCn4INf7NsDorpDfo9tq7-oRfR-hJlRl4j0fPTq6_Wfez8IeuxvPfSxLS7hIWi43hcPRmgwXnLEC5-9itUiIIUblNkDLyZc5saQdw7SManURuruFfa2IwMxoHKM3z4-Oz_paWrpj0UuWgrA9rLxiFFDDSTAX6S2nLSmZjnBZ7g8ZJa0Hru84-yM6UmH09J2JI1EAkmaWB9YjnaBepJMFYSTWarMC8xFg9N0m_YRk3Ho4HVOW3_XzfVHtlB2obwJA.jpg" alt="Telegram" width="40" height="40" style=" vertical-align: middle; border-radius: 50%;">
+   <a href="https://t.me/Synarix_DEV" target="_blank" style="background-color: #424242; padding: 10px; border-radius: 20px; text-decoration: none; display: flex; align-items: center;">
+        <img src="https://i.imgur.com/8zl66Qv.jpg" alt="Telegram" width="40" height="40" style="vertical-align: middle; border-radius: 50%;">
         <span style="font-size: 20px; vertical-align: middle; margin-left: 10px; margin-right:10px;">@Synarix_DEV</span>
     </a>
 </div>
@@ -27,50 +29,54 @@ With this tool, you can effortlessly swap your assets for BNB and take advantage
 - **💸 Low Tax Rates:** 1% tax, reduced to 0.2% if holding 1k RIX.
 - **🔄 Seamless Swapping:** Effortless asset swaps for BNB.
 
-## ⚙️ Setup
-
-### Install Python 3.12+
-
+### ⚙️ Setup Python 3.12+ and Git
 To install Python 3.12+, follow these steps based on your operating system:
 
 #### 🪟 Windows
 1. Download the latest version of Python from the [official Python website](https://www.python.org/downloads/).
 2. Run the installer and ensure the "Add Python to PATH" option is selected.
 3. Follow the installation instructions.
+4. Download Git from the [official Git website](https://git-scm.com/downloads) and follow the installation instructions.
 
 #### 🍎 macOS
 1. Open Terminal.
-2. Use Homebrew to install Python 3:  
+2. Use [Homebrew](https://brew.sh/) to install Python3 and Git:  
    ```bash
-   brew install python
+   brew install python git
    ```
 
 #### 🐧 Debian-based Linux
 1. Open Terminal.
-2. Use the package manager to install Python 3. For example, on Debian-based systems:
+2. Use the package manager to install Python 3 and Git.
    ```bash
    sudo apt-get update
-   sudo apt-get install python3
+   sudo apt-get install python3 git cmake
    ```
 
-#### Install 
-First of all, you need to install Python3+. To run on Android, you need to install [Termux](https://termux.com/) (only from F-Droid works atm).
+#### 📱 Termux (Android)
+1. Termux Installation:
+     Download and install Termux from [F-Droid](https://f-droid.org/en/packages/com.termux/) (recommended, other Builds bricked).
 
-```shell
-termux: 
-$ pkg install python git cmake 
-Debian/Ubuntu: 
-$ sudo apt install python3 git cmake gcc
-Windows:
-You need to install Visual Studio BuildTools & Python3
-```
-
-Clone Repo:  
-```shell
-git clone https://github.com/Synarix/PancakeSwap_Sniper_Bot_V3andV2
-cd PancaksSwap_Sniper_Bot_V3andV2
-python3 -m pip install -r requirements.txt # install Python requirements
-```
+2. Install Python 3.12+ and Additional Tools in Termux:
+ Open Termux.
+Install Python, Git, and CMake:
+    ```bash
+    pkg install python3 git cmake
+    ```
+### ⚙️ Install Sniper Bot
+1. Open Shell or CMD
+2. Clone Repo: Alternative Download via Zip
+    ```shell
+    git clone https://github.com/Synarix/PancakeSwap_Sniper_Bot_V3andV2
+    ``` 
+3. Go into PancaksSwap_Sniper_Bot_V3andV2 downloaded or extracted folder
+    ```shell
+    cd PancakeSwap_Sniper_Bot_V3andV2
+    ``` 
+4. Install python3 requirements
+    ```shell
+    python3 -m pip install -r requirements.txt
+    ```
 
 ## 🚀 Start Sniper.py
 
@@ -103,12 +109,13 @@ python Sniper.py -t <TOKEN_ADDRESS> -a <BNB_AMOUNT> -tx <TAMOUNT> -hp -wb <BLOCK
 
 
 ## 💖 Support Developer
-Verified contract: [0xbf2bd32bd3d643c1cfd6183120f9ff93171b58cd](https://bscscan.com/address/0xbf2bd32bd3d643c1cfd6183120f9ff93171b58cd#code).
+Verified contract: [0xa88ee4962d365535aa02e60e93f1c10f51dfd5ea](https://bscscan.com/address/0xa88ee4962d365535aa02e60e93f1c10f51dfd5ea#code).
 For security, use only the verified contract.
 You can find the used contract address in `pRixSwapOracle/constants.py` line 14.
 
 All contributions fund server costs and the Synarix project development. Be part of our journey and support us. Early investors and users will be rewarded with RIX tokens.
 
 #### Donation Address:
-###### 0x3844D3051a35AcA55f2236897f92Fcfce7A83000
 
+###### EVM: [0x0000022f6f742ca30bb7F309f53f619f36E826F2](https://bscscan.com/address/0x0000022f6f742ca30bb7f309f53f619f36e826f2)
+###### BTC: [bc1qr99ge06cdr84ty53lz50esc236fp5pjv7a3dut](https://btcscan.org/address/bc1qr99ge06cdr84ty53lz50esc236fp5pjv7a3dut)

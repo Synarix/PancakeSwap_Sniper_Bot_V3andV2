@@ -22,8 +22,6 @@ install_node() {
     export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   fi
-
-  # Install Node.js version 18 using nvm
   nvm install 18
   nvm use 18
   nvm alias default 18
@@ -54,4 +52,4 @@ fi
 
 # Start the Hardhat node as administrator
 echo "Starting Hardhat node..."
-sudo npx hardhat node
+npx hardhat node

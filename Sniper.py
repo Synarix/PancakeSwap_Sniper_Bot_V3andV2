@@ -281,7 +281,8 @@ class SniperBot():
                 spinner.stop()
                 break
             except Exception as e:
-                print(e, end="\r")
+                # Uncomment next line to see errors inside the await Liquidity
+                #print(e)
                 if "UPDATE" in str(e):
                     self.print_custom(e)
                     raise SystemExit
@@ -289,7 +290,7 @@ class SniperBot():
         self.print_custom("[DONE] Liquidity is Added!", color="green")
 
     def fetchLiquidity(self):
-        liq = self.TXN.w3U.from_wei(self.TXN.SwapContract.getLiquidityUSD(), 18)
+        liq = self.TXN.w3U.from_wei(self.TXN.SwapContract.getLiquidityUSD(False), (18 +self.TXN.IERC20.get_token_decimals()))
         self.print_custom("[LIQUIDTY] Current Token Liquidity: "+str(round(liq))+" USD" , color="yellow" )
         if float(liq) < float(self.TXN.settings.settings["MinLiquidityUSD"]):
             self.print_custom("[LIQUIDTY] <- TO SMALL, EXIT!", color="red")
@@ -429,10 +430,10 @@ class SniperBot():
                 self.print_custom("[TOKENTAX] Current Token BuyTax: "+str(honeyTax[0])+" %" , color="yellow")
                 self.print_custom("[TOKENTAX] Current Token SellTax: "+str(honeyTax[1])+" %" , color="yellow")
                 if honeyTax[1] > self.TXN.settings.settings["MaxSellTax"]:
-                    self.print_custom("Token SellTax exceeds Settings.json, exiting!", color="red")
+                    self.print_custom("[TOKENTAX] Token SellTax exceeds Settings.json, exiting!", color="red")
                     raise SystemExit
                 if honeyTax[0] > self.TXN.settings.settings["MaxBuyTax"]:
-                    self.print_custom("Token BuyTax exceeds Settings.json, exiting!", color="red")
+                    self.print_custom("[TOKENTAX] Token BuyTax exceeds Settings.json, exiting!", color="red")
                     raise SystemExit
             except Exception as e:
                 print(e)
@@ -443,6 +444,8 @@ class SniperBot():
 
         if self.wb != 0:
             self.awaitBlocks()
+            
+        self.print_custom(f"[TOKEN PRICE]: ${self.TXN.w3U.custom_round(self.TXN.w3U.from_wei(self.TXN.SwapContract.getUSDPrice(), 18)) }", color="green")
 
         if self.cl == True:
             if self.fetchLiquidity() != False:

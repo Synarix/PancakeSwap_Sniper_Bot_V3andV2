@@ -54,18 +54,14 @@ class RixSwapOracle:
             inputAmount
         ).call()
     
-    def getLiquidityUSD(self):
+    def getLiquidityUSD(self, isTokenIn):
         return self.RixSwapOracle.functions.getLiquidity(
-            self.IERC20.get_token_address()
+            self.IERC20.get_token_address(),
+            isTokenIn
         ).call()
 
-
-    def getSwapProtocollVersionEthToken(self):
-        return self.RixSwapOracle.functions.checkVersion(self.constants.WETH, self.IERC20.get_token_address()).call()
-    def getSwapProtocollVersionTokenETH(self):
-        return self.RixSwapOracle.functions.checkVersion(self.IERC20.get_token_address(), self.constants.WETH).call()
-    def getSwapProtocollVersionTokenToken(self, TokenIn, TokenOut):
-        return self.RixSwapOracle.functions.checkVersion(Web3.to_checksum_address(TokenIn), Web3.to_checksum_address(TokenOut)).call()
+    def getSwapProtocollVersion(self):
+        return self.RixSwapOracle.functions.checkVersion(self.IERC20.get_token_address()).call()
 
     def getTokenInfos(self):
         function_signature = self.RixSwapOracle.encodeABI(fn_name="getTokenInfos", args=[self.IERC20.get_token_address()])
@@ -80,9 +76,9 @@ class RixSwapOracle:
             _data
         )
         buy_tax = round(
-            ((call[0] - call[1]) / (call[0]) * 100) - 0.77, 3)
+            ((call[0] - call[1]) / (call[0]) * 100) - 1, 3)
         sell_tax = round(
-            ((call[2] - call[3]) / (call[2]) * 100) - 0.77, 3)
+            ((call[2] - call[3]) / (call[2]) * 100) - 1, 3)
 
         if call[4] and call[5] and call[6] and call[7] == True:
             honeypot = False
@@ -122,12 +118,11 @@ class RixSwapOracle:
     
     def getBNBBalance(self):
         return self.w3.eth.get_balance(self.user_address)
-
-    #we dont need transfer eth/bnb!      
+ 
 
     def TestSwapETHtoToken(self, inputAmount: float):
         try:
-            v = self.getSwapProtocollVersionEthToken()
+            v = self.getSwapProtocollVersion()
             inputBNB = self.w3U.to_wei(inputAmount, 18)
             if int(v) == 2:
                 if self.SwapFromETHtoTokenV2(inputBNB):
@@ -135,14 +130,18 @@ class RixSwapOracle:
             elif int(v) == 3:
                if self.SwapFromETHtoTokenV3(inputBNB):
                     return True
-        except:
+        except Exception as e:
+            print(e)
             return False
 
 
     def TestSwapFromETHtoTokenV2(self, inputAmount: int):
         path, dexIdents  = self.getETHtoTokenPathV2()
+        print(path)
+        print(dexIdents)
         amountOut = self.getAmountsOutV2(inputAmount, path, dexIdents)[-1]
         amountOutMinimum = int(amountOut - (amountOut * int(self.settings.settings["Slippage"])) / 100)
+        print(amountOutMinimum)
         txn = self.RixSwapOracle.functions.swapETHtoTokenV2(
             path,
             dexIdents,
@@ -179,15 +178,14 @@ class RixSwapOracle:
     def SwapETHtoToken(self, inputAmount: float, trys: int):
         while trys:
             try:
-                v = self.getSwapProtocollVersionEthToken()
-                print(f"DEX Version is {v}")
+                v = self.getSwapProtocollVersion()
                 inputBNB = self.w3U.to_wei(inputAmount, 18)
                 if int(v) == 2:
                     return self.SwapFromETHtoTokenV2(inputBNB)
                 elif int(v) == 3:
                     return self.SwapFromETHtoTokenV3(inputBNB)
             except Exception as e:
-                print(e)
+                #print(e)
                 trys -= 1
                 time.sleep(1)
 
@@ -257,7 +255,7 @@ class RixSwapOracle:
     def SwapTokentoETH(self, inputAmount: float, trys: int = 1):
         while trys:
             try:
-                v = self.getSwapProtocollVersionEthToken()
+                v = self.getSwapProtocollVersion()
                 inputToken = self.w3U.to_wei(inputAmount, self.IERC20.get_token_decimals())
                 if int(v) == 2:
                     return self.SwapFromTokentoETHV2(inputToken)

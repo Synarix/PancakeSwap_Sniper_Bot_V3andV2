@@ -1,3 +1,4 @@
 web3
 halo 
 requests 
+eth_abi
