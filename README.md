@@ -1,7 +1,7 @@
 
 
 
-## 🚀 BSC Pancakeswap V2 & V3 Sniper Bot 🚀
+## 🚀 BSC Pancakeswap/Uniswap V2 & V3 Sniper Bot 🚀
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/downloads/) [![Release](https://img.shields.io/badge/Release-V4-brightgreen)](https://github.com/Sevens-W3-Lab/Pancakeswap_BSC_Sniper_Bot/releases/tag/V4) [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)]()
 
 #### 👀 Bot Preview:
