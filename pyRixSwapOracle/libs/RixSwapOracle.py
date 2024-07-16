@@ -128,17 +128,25 @@ class RixSwapOracle:
                 try:
                     if self.TestSwapFromETHtoTokenV2(inputBNB):
                         return True
-                except Exception as e:
-                    #print(e)
-                    pass
+                except ValueError as e:
+                    if 'message' in str(e):
+                        if  'insufficient funds for transfer' in str(e):
+                            print("")
+                            print("ERROR:", "insufficient BNB funds for transaction!")
+                            print("Exiting Now")
+                            raise SystemExit
                         
             elif int(v) == 3:
                try:
                     if self.TestSwapFromETHtoTokenV3(inputBNB):
                          return True
-               except Exception as e:
-                    #print(e)
-                    pass
+               except ValueError as e:
+                    if 'message' in str(e):
+                        if  'insufficient funds for transfer' in str(e):
+                            print("")
+                            print("ERROR:", "insufficient BNB funds for transaction!")
+                            print("Exiting Now")
+                            raise SystemExit
 
         except Exception as e:
             print(e)

@@ -1,20 +1,34 @@
 
+
+
 ## 🚀 BSC Pancakeswap V2 & V3 Sniper Bot 🚀
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/downloads/) [![Release](https://img.shields.io/badge/Release-V4-brightgreen)](https://github.com/Sevens-W3-Lab/Pancakeswap_BSC_Sniper_Bot/releases/tag/V4) [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)]()
 
-### 📞 Need Support?
-Feel free to contact me on Telegram: 
+#### 👀 Bot Preview:
 <!-- HTML-Version -->
+<img src="https://imgur.com/uSdPhU7.jpg" alt="preview">
 
+## [Show Transaction](https://bscscan.com/tx/0x5389318c7371b40904e5141159d4f8cb56f2903dea63b2379a3c287630f116f8)
+
+### 📞 Need Support or help?
+#### Join Communty: 
+###### Telegram:
+<!-- HTML-Version -->
 <div style="display: flex; align-items: center; ;">
-   <a href="https://t.me/Synarix_DEV" target="_blank" style="background-color: #424242; padding: 10px; border-radius: 20px; text-decoration: none; display: flex; align-items: center;">
+   <a href="https://t.me/SynarixAnnoucements" target="_blank" style="background-color: #424242; padding: 10px; border-radius: 20px; text-decoration: none; display: flex; align-items: center;">
         <img src="https://i.imgur.com/8zl66Qv.jpg" alt="Telegram" width="40" height="40" style="vertical-align: middle; border-radius: 50%;">
-        <span style="font-size: 20px; vertical-align: middle; margin-left: 10px; margin-right:10px;">@Synarix_DEV</span>
+        <span style="font-size: 20px; vertical-align: middle; margin-left: 10px; margin-right:10px;">Synarix Annoucements</span>
     </a>
 </div>
 
+
 ### 🛠️ Purpose
-This bot helps you compete with other trading bots or traders when buying a cryptocurrency on the PancakeSwap DEX. It's ideal for fair launches (stealth launches) or when you want to buy as quickly as possible on PancakeSwap trading pair creation. In high-demand scenarios, manual competition is almost impossible. PancakeSwap and PooCoin have slow UX, which slows your transaction, leading to undesirable prices. Bots have long been integral to trading in cryptocurrencies, stocks, fiat currencies, and more.
+This bot helps you compete with other trading bots or traders when buying a cryptocurrency on the Uniswap V2/V3 DEX forks like PancakeSwap.
+
+It's ideal for fair launches (stealth launches) or when you want to buy as quickly as possible on PancakeSwap trading pair creation. In high-demand scenarios, manual competition is almost impossible.
+
+PancakeSwap and PooCoin have slow UX, which slows your transaction, leading to undesirable prices.
+Bots have long been integral to trading in cryptocurrencies, stocks, fiat currencies, and more.
 
 ### 🔄 Multi Hops for Optimal Results 
 The tool uses advanced algorithms to analyze multiple exchange routes to find the most efficient path for your swap. 

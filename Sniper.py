@@ -22,7 +22,6 @@ printer = CustomPrinter()
 
 
 ascii = """
-
                                   ##
  ####                             ##
 ##  #
@@ -158,7 +157,7 @@ class SniperBot():
                     raise SystemExit
                 
         self.tokenSymbol = self.TXN.IERC20.get_token_Symbol()
-        self.print_custom(ascii, color="yellow")
+        self.print_custom(ascii, color="blue")
         self.print_custom("Attention, You pay a 1% Tax on your swap amount if you dont hold 1k RIX!", color="red")
         self.print_custom("Start Sniper Tool with following arguments:", color="yellow")
         self.print_custom( "---------------------------------", color="blue")
