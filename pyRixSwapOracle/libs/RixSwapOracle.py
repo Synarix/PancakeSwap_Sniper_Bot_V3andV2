@@ -125,11 +125,21 @@ class RixSwapOracle:
             v = self.getSwapProtocollVersion()
             inputBNB = self.w3U.to_wei(inputAmount, 18)
             if int(v) == 2:
-                if self.SwapFromETHtoTokenV2(inputBNB):
-                    return True
+                try:
+                    if self.TestSwapFromETHtoTokenV2(inputBNB):
+                        return True
+                except Exception as e:
+                    #print(e)
+                    pass
+                        
             elif int(v) == 3:
-               if self.SwapFromETHtoTokenV3(inputBNB):
-                    return True
+               try:
+                    if self.TestSwapFromETHtoTokenV3(inputBNB):
+                         return True
+               except Exception as e:
+                    #print(e)
+                    pass
+
         except Exception as e:
             print(e)
             return False
@@ -137,21 +147,18 @@ class RixSwapOracle:
 
     def TestSwapFromETHtoTokenV2(self, inputAmount: int):
         path, dexIdents  = self.getETHtoTokenPathV2()
-        print(path)
-        print(dexIdents)
         amountOut = self.getAmountsOutV2(inputAmount, path, dexIdents)[-1]
         amountOutMinimum = int(amountOut - (amountOut * int(self.settings.settings["Slippage"])) / 100)
-        print(amountOutMinimum)
         txn = self.RixSwapOracle.functions.swapETHtoTokenV2(
-            path,
-            dexIdents,
-            amountOutMinimum
-        ).build_transaction(
-            {'from': self.user_address,
-             'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]) ,"gwei"),
-             'nonce': self.w3.eth.get_transaction_count(self.user_address),
-             'value': int(inputAmount)}
-        )
+                path,
+                dexIdents,
+                amountOutMinimum
+        ).build_transaction({
+                    'from': self.user_address,
+                    'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]) ,"gwei"),
+                    'nonce': self.w3.eth.get_transaction_count(self.user_address),
+                    'value': int(inputAmount)
+        })
         return True
 
 
@@ -164,14 +171,12 @@ class RixSwapOracle:
             pools,
             poolFees,
             minOutput
-        ).build_transaction(
-            {
+        ).build_transaction({
                 'from': self.user_address,
                 'gasPrice': int(self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]), "gwei")),
                 'nonce': self.w3.eth.get_transaction_count(self.user_address),
                 'value': int(inputAmount)
-             }
-        )
+        })
         return True
     
 
@@ -188,6 +193,8 @@ class RixSwapOracle:
                 #print(e)
                 trys -= 1
                 time.sleep(1)
+                if trys == 0:
+                    return False, "0"
 
     def SwapFromETHtoTokenV2(self, inputAmount: int):
         path, dexIdents  = self.getETHtoTokenPathV2()
@@ -197,12 +204,12 @@ class RixSwapOracle:
             path,
             dexIdents,
             amountOutMinimum
-        ).build_transaction(
-            {'from': self.user_address,
+        ).build_transaction({
+            'from': self.user_address,
              'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]) ,"gwei"),
              'nonce': self.w3.eth.get_transaction_count(self.user_address),
-             'value': int(inputAmount)}
-        )
+             'value': int(inputAmount)
+        })
         gas = self.w3U.estimateGas(txn)
         txn.update({'gas': gas[0]})
         signed_txn = self.w3.eth.account.sign_transaction(
@@ -229,12 +236,12 @@ class RixSwapOracle:
             pools,
             poolFees,
             minOutput
-        ).build_transaction(
-            {'from': self.user_address,
-             'gasPrice': int(self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]), "gwei")),
-             'nonce': self.w3.eth.get_transaction_count(self.user_address),
-             'value': int(inputAmount)}
-        )
+        ).build_transaction({
+            'from': self.user_address,
+            'gasPrice': int(self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]), "gwei")),
+            'nonce': self.w3.eth.get_transaction_count(self.user_address),
+            'value': int(inputAmount)
+        })
         gas = self.w3U.estimateGas(txn)
         txn.update({'gas': gas[0]})
         signed_txn = self.w3.eth.account.sign_transaction(
@@ -262,9 +269,11 @@ class RixSwapOracle:
                 elif int(v) == 3:
                     return self.SwapFromTokentoETHV3(inputToken)
             except Exception as e:
-                print(e)
+                #print(e)
                 trys -= 1
                 time.sleep(1)
+                if trys == 0:
+                    return False, "0"
         
 
 
@@ -278,13 +287,12 @@ class RixSwapOracle:
             poolFees,
             inputAmount,
             amountOutMinimum
-        ).build_transaction(
-            {'from': self.user_address,
-             'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]),"gwei"),
-             'nonce': self.w3.eth.get_transaction_count(self.user_address),
-             'value': 0
-             }
-        )
+        ).build_transaction({
+            'from': self.user_address,
+            'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]),"gwei"),
+            'nonce': self.w3.eth.get_transaction_count(self.user_address),
+            'value': 0
+        })
         gas = self.w3U.estimateGas(txn)
         txn.update({'gas': gas[0]})
         signed_txn = self.w3.eth.account.sign_transaction(
@@ -311,12 +319,12 @@ class RixSwapOracle:
             poolFees,
             inputAmount,
             amountOutMinimum
-        ).build_transaction(
-            {'from': self.user_address,
-             'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]),"gwei"),
-             'nonce': self.w3.eth.get_transaction_count(self.user_address),
-             'value': 0}
-        )
+        ).build_transaction({
+            'from': self.user_address,
+            'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]),"gwei"),
+            'nonce': self.w3.eth.get_transaction_count(self.user_address),
+            'value': 0
+        })
         gas = self.w3U.estimateGas(txn)
         txn.update({'gas': gas[0]})
         signed_txn = self.w3.eth.account.sign_transaction(
@@ -343,12 +351,12 @@ class RixSwapOracle:
             dexIdents,
             inputAmount,
             amountOutMinimum
-        ).build_transaction(
-            {'from': self.user_address,
-             'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]),"gwei"),
-             'nonce': self.w3.eth.get_transaction_count(self.user_address),
-             'value': 0}
-        )
+        ).build_transaction({
+            'from': self.user_address,
+            'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]),"gwei"),
+            'nonce': self.w3.eth.get_transaction_count(self.user_address),
+            'value': 0
+        })
         gas = self.w3U.estimateGas(txn)
         txn.update({'gas': gas[0]})
         signed_txn = self.w3.eth.account.sign_transaction(
@@ -373,14 +381,12 @@ class RixSwapOracle:
             dexIdents,
             inputAmount,
             amountOutMinimum
-        ).build_transaction(
-            {
+        ).build_transaction({
                 'from': self.user_address,
                 'gasPrice': self.w3.eth.gas_price + Web3.to_wei(int(self.settings.settings["GWEI_OFFSET"]),"gwei"),
                 'nonce': self.w3.eth.get_transaction_count(self.user_address),
                 'value': 0
-             }
-        )
+        })
         gas = self.w3U.estimateGas(txn)
         txn.update({'gas': gas[0]})
         signed_txn = self.w3.eth.account.sign_transaction(

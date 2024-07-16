@@ -23,6 +23,18 @@ printer = CustomPrinter()
 
 ascii = """
 
+                                  ##
+ ####                             ##
+##  #
+###   ## ## #####    ###   ### # ###  ## ##
+ ###  ## ##  ## ##  ## ##   ####  ##   ###
+  ###  ###   ## ##   ####   ##    ##    #
+#  ##  ###   ## ##  ## ##   ##    ##   ###
+####    #   ### ###  ##### ####  #### ## ##
+      ###
+      ##
+
+Supports Uniswap V2 and V3 Forks.
 """
 
 parser = argparse.ArgumentParser(
@@ -201,10 +213,14 @@ class SniperBot():
     def awaitBuy(self):
         for i in range(self.tx):
             tx = self.TXN.SwapContract.SwapETHtoToken(self.amountForSnipe, self.retry)
-            if tx[0] == True:
-                self.print_custom("Buy Hash: " + tx[1] , color="green"), self.print_custom(tx[2] , color="yellow")
-            if tx[0] != True:
-                raise SystemExit
+            try:
+                if tx[0] == True:
+                    self.print_custom("Buy Hash: " + tx[1] , color="green"), self.print_custom(tx[2] , color="yellow")
+                if tx[0] != True:
+                    self.print_custom("[ERROR]: Transaction fail, exiting", color="red")
+                    raise SystemExit
+            except Exception as e:
+                print(e)
 
     def awaitSell(self):
         tokenBalance = self.TXN.w3U.from_wei(self.TXN.IERC20.get_token_balance(self.TXN.SwapContract.user_address), self.TXN.IERC20.get_token_decimals())
@@ -358,13 +374,13 @@ class SniperBot():
                         self.awaitSell()
                         break
 
-                msg = str("Token Balance: " + str(TokenBalance) + " | CurrentOutput: "+str(self.TXN.w3U.get_human_amount(LastPrice))+" BNB")
+                msg = str("Token Balance: " + str(TokenBalance) + " | CurrentOutput: "+str(self.TXN.w3U.custom_round(LastPrice))+" BNB")
                 if self.stoploss != 0:
-                    msg = msg + " | Stop loss below: "+str(self.TXN.w3U.get_human_amount(self.stoploss)) + " BNB"
+                    msg = msg + " | Stop loss below: "+str(self.TXN.w3U.custom_round(self.stoploss)) + " BNB"
                 if self.takeProfitOutput != 0:
-                    msg = msg + "| Take Profit Over: "+str(self.TXN.w3U.get_human_amount(self.takeProfitOutput)) + " BNB"
+                    msg = msg + "| Take Profit Over: "+str(self.TXN.w3U.custom_round(self.takeProfitOutput)) + " BNB"
                 if self.tsl != 0:
-                    msg = msg + " | Trailing Stop loss below: "+str(self.TXN.w3U.get_human_amount(self.TrailingStopLoss)) + " BNB"
+                    msg = msg + " | Trailing Stop loss below: "+str(self.TXN.w3U.custom_round(self.TrailingStopLoss)) + " BNB"
                 self.print_custom(text=msg, end="\r", color="yellow")
 
             except Exception as e:
@@ -411,14 +427,17 @@ class SniperBot():
             try:
                 self.print_custom("[HONEYPOT]: Checking Token...", color="yellow")
                 honeyTax = self.TXN.SwapContract.getTokenInfos()
-
                 if honeyTax[2] == True:
                     self.print_custom("[HONEYPOT]: Token is Honeypot, exiting", color="red")
                     raise SystemExit
+                
                 elif honeyTax[2] == False:
                     self.print_custom(
-                          "[HONEYPOT]: Token is NOT a Honeypot!", color="green")
+                          "[HONEYPOT]: Token is NOT a Honeypot!", color="green"
+                          )
+                    
             except Exception as e:
+                print(e)
                 self.i = input(
                     "Error in HoneyPot Check, HIGH Risk to enter a Honeypot!\n" +" Exiting? y/n \n > ")
                 if self.i.lower() == "y":

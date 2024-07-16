@@ -1,14 +1,14 @@
 {
     "metamask_address": "",
     "metamask_private_key": "",
-    "RPC": "https://endpoints.omniatech.io/v1/bsc/mainnet/public",
+    "RPC": "https://bsc-dataseed1.binance.org/",
     "GWEI_OFFSET": 1,
     "MaxTXFeeBNB": 0.01,
     "Slippage": 20,
     "MinLiquidityUSD": 1000,
     "MaxSellTax": 25,
     "MaxBuyTax": 15,
-    "timeout": 120,
+    "timeout": 60,
 
     "cc_BlacklistWords": [
         "ROOT",

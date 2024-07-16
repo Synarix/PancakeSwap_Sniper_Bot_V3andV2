@@ -15,7 +15,7 @@ module.exports = {
     hardhat: {
       forking: {
         url: "https://bscrpc.com",
-        blockNumber: 40031194 // add here last block
+        blockNumber: 40515030 // add here last block
       },
       chains: {
         56: {

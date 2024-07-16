@@ -21,8 +21,7 @@ class initSettings():
         if Web3.is_address(self.settings["metamask_address"]) != True:
             print("Please check your Settings.json:  Error in: metamask_address!")
             raise SystemExit
-        
-        if len(self.settings["metamask_private_key"]) != 64 or len(self.settings["metamask_private_key"]) != 66:
+        if len(self.settings["metamask_private_key"]) != 64 and len(self.settings["metamask_private_key"]) != 66:
             print("Please check your Settings.json:  Error in: metamask_private_key!")
             raise SystemExit
 
