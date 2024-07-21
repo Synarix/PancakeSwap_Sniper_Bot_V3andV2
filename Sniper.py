@@ -161,7 +161,7 @@ class SniperBot():
         self.print_custom("Attention, You pay a 1% Tax on your swap amount if you dont hold 1k RIX!", color="red")
         self.print_custom("Start Sniper Tool with following arguments:", color="yellow")
         self.print_custom( "---------------------------------", color="blue")
-        self.print_custom(f"User Balance: {Web3.from_wei(self.TXN.SwapContract.getBNBBalance(), "ether")} BNB", color="yellow")
+        self.print_custom(f"User Balance: {Web3.from_wei(self.TXN.SwapContract.getBNBBalance(), 'ether')} BNB", color="yellow")
         self.print_custom("Amount for Buy: "+str(self.amount)+" BNB", color="yellow")
         self.print_custom("Token to Interact: "+str(self.token) , color="yellow")
         self.print_custom("Token Name: "+str(self.TXN.IERC20.get_token_Name()) , color="yellow")
