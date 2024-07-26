@@ -3,6 +3,7 @@
 
 ## 🚀 BSC Pancakeswap/Uniswap V2 & V3 Sniper Bot 🚀
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/downloads/) [![Release](https://img.shields.io/badge/Release-V1-brightgreen)](https://github.com/Synarix/PancakeSwap_Sniper_Bot_V3andV2) [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)]()
+### Faster and much cheaper than Maestro or other Telegram multi-user snipers.  
 
 #### 👀 Bot Preview:
 <!-- HTML-Version -->
